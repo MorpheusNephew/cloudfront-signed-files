@@ -1,0 +1,21 @@
+### Get all files
+GET http://localhost:5000/api/files
+Content-Type: application/json
+Accept: application/json
+
+### Get file
+GET http://localhost:5000/api/files/62e99c4958b95613efc93ad8
+Content-Type: application/json
+Accept: application/json
+
+### Create file
+POST http://localhost:5000/api/files
+Content-Type: application/json
+Accept: application/json
+
+{ "name": "How to Setup HTTPS Locally with create-react-app.pdf"}
+
+### Delete file
+DELETE http://localhost:5000/api/files/62e99c4958b95613efc93ad8
+Content-Type: application/json
+Accept: application/json

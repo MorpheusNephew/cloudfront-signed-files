@@ -1,0 +1,14 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "DB for the thing",
+  "main": "index.js",
+  "author": "Jelani Jackson",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "docker build -t signed-things-db .",
+    "prestart": "yarn build",
+    "start": "docker run -p 27017:27017 signed-things-db"
+  }
+}
