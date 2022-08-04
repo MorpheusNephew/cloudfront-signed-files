@@ -58,12 +58,10 @@ const App = () => {
                   name: fileToUpload.name,
                 });
 
-                const { data: s3Response } = await Axios.put(
+                await Axios.put(
                   apiResponse.url,
                   fileToUpload
                 );
-
-                console.log({ s3Response });
 
                 await timeout(1000);
               } catch {
