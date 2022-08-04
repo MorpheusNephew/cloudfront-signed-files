@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { s3BaseUrl } from "../constants";
 import { createFile, deleteFile, getFile, getFiles } from "../database/models";
-import { deleteFile as deleteS3File } from "../s3";
+import { deleteFile as deleteS3File } from "../aws/s3";
 
 const fileRouter = Router()
   .get("/:id", async (req, res) => {
