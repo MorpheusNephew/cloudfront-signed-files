@@ -176,3 +176,7 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+
+# Private Keys
+**/private_key.pem
