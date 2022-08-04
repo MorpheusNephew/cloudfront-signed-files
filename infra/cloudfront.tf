@@ -25,6 +25,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
         forward = "none"
       }
     }
+
+    trusted_key_groups = [aws_cloudfront_key_group.kg.id]
   }
 
   restrictions {
@@ -40,4 +42,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
 resource "aws_cloudfront_origin_access_identity" "s3_oai" {
   comment = "Used with s3"
+}
+
+resource "aws_cloudfront_public_key" "pk" {
+  encoded_key = file("public_key.pem")
+}
+
+resource "aws_cloudfront_key_group" "kg" {
+  items = [aws_cloudfront_public_key.pk.id]
+  name  = "cloudfront-key-group"
 }
