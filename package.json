@@ -7,9 +7,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start:db": "cd db && yarn start",
-    "start:api": "cd api && yarn start",
-    "start:web": "cd web && yarn start",
+    "start:db": "cd app/db && yarn start",
+    "start:api": "cd app/api && yarn start",
+    "start:web": "cd app/web && yarn start",
     "start": "concurrently \"yarn:start:*\""
   },
   "devDependencies": {
