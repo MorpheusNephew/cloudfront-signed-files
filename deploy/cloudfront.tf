@@ -12,7 +12,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   default_cache_behavior {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
-    cached_methods  = ["GET"]
+    cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
     viewer_protocol_policy = "allow-all"
 
