@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { FileRequest } from "../../../lib/files";
+import { s3BaseUrl } from "../constants";
 import { createFile, deleteFile, getFile, getFiles } from "../database/models";
 
 const fileRouter = Router()
@@ -24,7 +24,7 @@ const fileRouter = Router()
 
     const fileToCreate = {
       name: encodedFileName,
-      url: `https://somecloudfrontUrlToS3.com/${encodedFileName}`,
+      url: `${s3BaseUrl}/${encodedFileName}`,
     };
 
     try {
