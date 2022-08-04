@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { FileRequest } from "../../../lib/files";
+import { s3BaseUrl } from "../constants";
 import { createFile, deleteFile, getFile, getFiles } from "../database/models";
+import { deleteFile as deleteS3File } from "../s3";
 
 const fileRouter = Router()
   .get("/:id", async (req, res) => {
@@ -14,7 +15,12 @@ const fileRouter = Router()
     res.status(200).json(retrievedFiles);
   })
   .delete("/:id", async (req, res) => {
-    await deleteFile(req.params.id);
+    const fileToDelete = await getFile(req.params.id);
+
+    if (fileToDelete) {
+      await deleteFile(req.params.id);
+      await deleteS3File(fileToDelete.url);
+    }
 
     res.status(204).json();
   })
@@ -24,13 +30,13 @@ const fileRouter = Router()
 
     const fileToCreate = {
       name: encodedFileName,
-      url: `https://somecloudfrontUrlToS3.com/${encodedFileName}`,
+      url: `${s3BaseUrl}/${encodedFileName}`,
     };
 
     try {
       const createdFile = await createFile(fileToCreate);
 
-    res.status(201).json(createdFile);
+      res.status(201).json(createdFile);
     } catch {
       res.status(400).json("Error creating file");
     }
