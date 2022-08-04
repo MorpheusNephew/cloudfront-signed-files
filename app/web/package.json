@@ -19,6 +19,7 @@
   },
   "proxy": "http://localhost:5000",
   "scripts": {
+    "prestart": "yarn",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
