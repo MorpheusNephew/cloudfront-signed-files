@@ -22,6 +22,15 @@ data "aws_iam_policy_document" "oia_for_s3" {
   }
 }
 
+resource "aws_s3_bucket_cors_configuration" "s3_cors" {
+  bucket = aws_s3_bucket.signed_bucket.id
+
+  cors_rule {
+    allowed_origins = [ "*" ]
+    allowed_methods = [ "GET", "DELETE", "PUT", "POST" ]
+  }
+}
+
 locals {
   s3_origin_id = "morphS3Origin"
 }
