@@ -51,12 +51,19 @@ const App = () => {
 
               setUpdatingFiles(true);
 
-              const fileToUpload = e.currentTarget.fileToUpload;
-
-              const fileToUploadName = fileToUpload.files[0].name;
+              const fileToUpload = e.currentTarget.fileToUpload.files[0];
 
               try {
-                await Axios.post("/api/files", { name: fileToUploadName });
+                const { data: apiResponse } = await Axios.post("/api/files", {
+                  name: fileToUpload.name,
+                });
+
+                const { data: s3Response } = await Axios.put(
+                  apiResponse.url,
+                  fileToUpload
+                );
+
+                console.log({ s3Response });
 
                 await timeout(1000);
               } catch {
@@ -93,7 +100,9 @@ const App = () => {
                   }}
                   value="Delete"
                 />{" "}
-                <span>{decodedFileName}</span>
+                <a href={file.url} target={"_blank"} rel="noreferrer">
+                  {decodedFileName}
+                </a>
               </div>
             );
           })}
