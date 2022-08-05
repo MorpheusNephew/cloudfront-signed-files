@@ -1,13 +1,19 @@
 import { Router } from 'express';
 import { s3BaseUrl } from '../constants';
 import { createFile, deleteFile, getFile, getFiles } from '../database/models';
-import { deleteFile as deleteS3File } from '../aws/s3';
+import { createSignedUrl, deleteFile as deleteS3File } from '../aws';
 
 const fileRouter = Router()
   .get('/:id', async (req, res) => {
-    const retrievedFile = await getFile(req.params.id);
+    try {
+      const retrievedFile = await getFile(req.params.id);
 
-    res.status(200).json(retrievedFile ?? undefined);
+      retrievedFile
+        ? res.status(200).json(retrievedFile)
+        : res.status(404).json();
+    } catch (e) {
+      res.status(400).json(e);
+    }
   })
   .get('/', async (_req, res) => {
     const retrievedFiles = await getFiles();
@@ -15,26 +21,38 @@ const fileRouter = Router()
     res.status(200).json(retrievedFiles);
   })
   .delete('/:id', async (req, res) => {
-    const fileToDelete = await getFile(req.params.id);
+    try {
+      const fileToDelete = await getFile(req.params.id);
 
-    if (fileToDelete) {
-      await deleteFile(req.params.id);
-      await deleteS3File(fileToDelete.url);
+      if (fileToDelete) {
+        await deleteFile(req.params.id);
+
+        const deleteUrl = createSignedUrl(fileToDelete.url);
+        await deleteS3File(deleteUrl);
+
+        res.status(204).json();
+      } else {
+        res.status(404).json();
+      }
+    } catch (e) {
+      res.status(400).json();
     }
-
-    res.status(204).json();
   })
   .post('/', async (req, res) => {
     const fileName: string = req.body.name;
     const encodedFileName = encodeURI(fileName);
 
+    const fileUrl = `${s3BaseUrl}/${encodedFileName}`;
+
     const fileToCreate = {
       name: encodedFileName,
-      url: `${s3BaseUrl}/${encodedFileName}`,
+      url: fileUrl,
     };
 
     try {
       const createdFile = await createFile(fileToCreate);
+
+      createdFile.url = createSignedUrl(fileUrl);
 
       res.status(201).json(createdFile);
     } catch {
