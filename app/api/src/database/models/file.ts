@@ -1,5 +1,5 @@
-import mongoose, { model, Schema } from "mongoose";
-import { FileRequest, FileResponse } from "../../../../lib/files";
+import mongoose, { model, Schema } from 'mongoose';
+import { FileRequest, FileResponse } from '../../../../lib/files';
 
 const FileSchema = new Schema<FileResponse>({
   id: Schema.Types.ObjectId,
@@ -7,7 +7,7 @@ const FileSchema = new Schema<FileResponse>({
   url: { type: Schema.Types.String, unique: true },
 });
 
-const File = model<FileResponse>("File", FileSchema);
+const File = model<FileResponse>('File', FileSchema);
 
 export const getFile = async (fileId: string) => File.findById(fileId);
 

@@ -1,20 +1,20 @@
-import { Router } from "express";
-import { s3BaseUrl } from "../constants";
-import { createFile, deleteFile, getFile, getFiles } from "../database/models";
-import { deleteFile as deleteS3File } from "../aws/s3";
+import { Router } from 'express';
+import { s3BaseUrl } from '../constants';
+import { createFile, deleteFile, getFile, getFiles } from '../database/models';
+import { deleteFile as deleteS3File } from '../aws/s3';
 
 const fileRouter = Router()
-  .get("/:id", async (req, res) => {
+  .get('/:id', async (req, res) => {
     const retrievedFile = await getFile(req.params.id);
 
     res.status(200).json(retrievedFile ?? undefined);
   })
-  .get("/", async (_req, res) => {
+  .get('/', async (_req, res) => {
     const retrievedFiles = await getFiles();
 
     res.status(200).json(retrievedFiles);
   })
-  .delete("/:id", async (req, res) => {
+  .delete('/:id', async (req, res) => {
     const fileToDelete = await getFile(req.params.id);
 
     if (fileToDelete) {
@@ -24,7 +24,7 @@ const fileRouter = Router()
 
     res.status(204).json();
   })
-  .post("/", async (req, res) => {
+  .post('/', async (req, res) => {
     const fileName: string = req.body.name;
     const encodedFileName = encodeURI(fileName);
 
@@ -38,7 +38,7 @@ const fileRouter = Router()
 
       res.status(201).json(createdFile);
     } catch {
-      res.status(400).json("Error creating file");
+      res.status(400).json('Error creating file');
     }
   });
 

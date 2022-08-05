@@ -1,2 +1,2 @@
-export * from './cloudfront';
-export * from "./s3";
+export * from './cloudfront-signer';
+export * from './s3';
