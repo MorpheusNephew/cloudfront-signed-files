@@ -10,6 +10,7 @@ import {
   cloudfrontPrivateKey,
   s3BaseUrl,
 } from '../constants';
+import { FileResponse } from '../../../lib/files';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
@@ -25,17 +26,23 @@ export const createSignedUrl = (fileUrl: string) => {
   return getSignedUrl(input);
 };
 
-export const addSignedCookies = (res: Response) => {
+export const createSignedCookies = (files: FileResponse[]) => {
+  const policy: Policy = {
+    Statement: files.map((file) => ({ Resource: file.url })),
+  };
+
   const input: CloudfrontSignInputWithPolicy = {
     url: `${s3BaseUrl}/*`,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
-    policy: '',
+    policy: JSON.stringify(policy),
   };
 
-  const signedCookies = getSignedCookies(input);
-
-  for (const [key, value] of Object.entries(signedCookies)) {
-    res.cookie(key, value);
-  }
+  return getSignedCookies(input);
 };
+
+interface Policy {
+  Statement: Array<{
+    Resource: string;
+  }>;
+}

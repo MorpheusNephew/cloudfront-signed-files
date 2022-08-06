@@ -1,16 +1,28 @@
 import { Router } from 'express';
-import { s3BaseUrl } from '../constants';
+import { cloudfrontDomainName, s3BaseUrl } from '../constants';
 import { createFile, deleteFile, getFile, getFiles } from '../database/models';
-import { createSignedUrl, deleteFile as deleteS3File } from '../aws';
+import {
+  createSignedCookies,
+  createSignedUrl,
+  deleteFile as deleteS3File,
+} from '../aws';
 
 const fileRouter = Router()
   .get('/:id', async (req, res) => {
     try {
       const retrievedFile = await getFile(req.params.id);
 
-      retrievedFile
-        ? res.status(200).json(retrievedFile)
-        : res.status(404).json();
+      if (retrievedFile) {
+        const signedCookies = createSignedCookies([retrievedFile]);
+
+        for (const [key, value] of Object.entries(signedCookies)) {
+          res.cookie(key, value, { domain: `.${cloudfrontDomainName}` });
+        }
+
+        res.redirect(retrievedFile.url);
+      } else {
+        res.status(404).json();
+      }
     } catch (e) {
       res.status(400).json(e);
     }

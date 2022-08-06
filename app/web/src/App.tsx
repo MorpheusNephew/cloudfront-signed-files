@@ -58,10 +58,7 @@ const App = () => {
                   name: fileToUpload.name,
                 });
 
-                await Axios.put(
-                  apiResponse.url,
-                  fileToUpload
-                );
+                await Axios.put(apiResponse.url, fileToUpload);
 
                 await timeout(1000);
               } catch {
@@ -74,12 +71,12 @@ const App = () => {
           >
             <label>Upload File</label>{" "}
             <input
-              name="fileToUpload"
+              name='fileToUpload'
               type={"file"}
-              accept="image/*,audio/*,video/*,.pdf"
-              aria-label="Upload File"
+              accept='image/*,audio/*,video/*,.pdf'
+              aria-label='Upload File'
             />{" "}
-            <input type={"submit"} value="Submit" />
+            <input type={"submit"} value='Submit' />
           </form>
           {files.map((file) => {
             const decodedFileName = decodeURI(file.name);
@@ -96,9 +93,18 @@ const App = () => {
 
                     setUpdatingFiles(false);
                   }}
-                  value="Delete"
+                  value='Delete'
                 />{" "}
-                <a href={file.url} target={"_blank"} rel="noreferrer">
+                <a
+                  href={file.url}
+                  target={"_blank"}
+                  onClick={async (e) => {
+                    e.preventDefault();
+
+                    await Axios.get(`/api/files/${file.id}`);
+                  }}
+                  rel='noreferrer'
+                >
                   {decodedFileName}
                 </a>
               </div>
