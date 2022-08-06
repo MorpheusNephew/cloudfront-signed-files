@@ -58,7 +58,11 @@ const App = () => {
                   name: fileToUpload.name,
                 });
 
-                await Axios.put(apiResponse.url, fileToUpload);
+                await Axios.put(apiResponse.url, fileToUpload, {
+                  headers: {
+                    "Content-Disposition": "inline",
+                  },
+                });
 
                 await timeout(1000);
               } catch {
@@ -73,7 +77,7 @@ const App = () => {
             <input
               name='fileToUpload'
               type={"file"}
-              accept='image/*,audio/*,video/*,.pdf'
+              accept='image/*'
               aria-label='Upload File'
             />{" "}
             <input type={"submit"} value='Submit' />
@@ -101,7 +105,11 @@ const App = () => {
                   onClick={async (e) => {
                     e.preventDefault();
 
-                    await Axios.get(`/api/files/${file.id}`);
+                    const { data: retrievedFile } = await Axios.get(
+                      `/api/files/${file.id}`
+                    );
+
+                    window.open(retrievedFile.url, "_blank", "noreferrer");
                   }}
                   rel='noreferrer'
                 >
