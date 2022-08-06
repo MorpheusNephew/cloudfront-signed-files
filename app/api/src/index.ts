@@ -5,9 +5,7 @@ import bodyParser from 'body-parser';
 
 const app = express();
 
-app.use(bodyParser.json())
-
-app.use('/api', routers);
+app.use(bodyParser.json()).use('/api', routers);
 
 const port = process.env.PORT || 5000;
 

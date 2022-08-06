@@ -1,15 +1,15 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import {
   mongoDbName,
   mongoDbPass,
   mongoDbUrl,
   mongoDbUser,
-} from "../constants";
+} from '../constants';
 
 export const connectToMongoDb = async () => {
   await mongoose.connect(mongoDbUrl, {
     dbName: mongoDbName,
     auth: { username: mongoDbUser, password: mongoDbPass },
   });
-  console.log("connected to mongo db");
+  console.log('connected to mongo db');
 };

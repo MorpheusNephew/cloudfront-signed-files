@@ -58,10 +58,7 @@ const App = () => {
                   name: fileToUpload.name,
                 });
 
-                await Axios.put(
-                  apiResponse.url,
-                  fileToUpload
-                );
+                await Axios.put(apiResponse.url, fileToUpload);
 
                 await timeout(1000);
               } catch {
@@ -74,33 +71,51 @@ const App = () => {
           >
             <label>Upload File</label>{" "}
             <input
-              name="fileToUpload"
+              name='fileToUpload'
               type={"file"}
-              accept="image/*,audio/*,video/*,.pdf"
-              aria-label="Upload File"
+              accept='image/*,audio/*,video/*,.pdf'
+              aria-label='Upload File'
             />{" "}
-            <input type={"submit"} value="Submit" />
+            <input type={"submit"} value='Submit' />
           </form>
           {files.map((file) => {
             const decodedFileName = decodeURI(file.name);
             return (
               <div key={decodedFileName}>
-                <input
-                  type={"button"}
-                  onClick={async () => {
-                    setUpdatingFiles(true);
+                <div>
+                  <input
+                    type={"button"}
+                    onClick={async () => {
+                      setUpdatingFiles(true);
 
-                    await Axios.delete(`/api/files/${file.id}`);
+                      await Axios.delete(`/api/files/${file.id}`);
 
-                    await timeout(1000);
+                      await timeout(1000);
 
-                    setUpdatingFiles(false);
-                  }}
-                  value="Delete"
-                />{" "}
-                <a href={file.url} target={"_blank"} rel="noreferrer">
-                  {decodedFileName}
-                </a>
+                      setUpdatingFiles(false);
+                    }}
+                    value='Delete'
+                  />{" "}
+                  <a
+                    href={file.url}
+                    target={"_blank"}
+                    onClick={async (e) => {
+                      e.preventDefault();
+
+                      const { data: retrievedFile } = await Axios.get(
+                        `/api/files/${file.id}`
+                      );
+
+                      window.open(retrievedFile.url, "_blank", "noreferrer");
+                    }}
+                    rel='noreferrer'
+                  >
+                    {decodedFileName}
+                  </a>
+                </div>
+                <div>
+                  <iframe title={file.name} src={file.url} sandbox="allow-same-origin"></iframe>
+                </div>
               </div>
             );
           })}
