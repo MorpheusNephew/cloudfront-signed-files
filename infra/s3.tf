@@ -26,8 +26,9 @@ resource "aws_s3_bucket_cors_configuration" "s3_cors" {
   bucket = aws_s3_bucket.signed_bucket.id
 
   cors_rule {
-    allowed_origins = [ "*" ]
-    allowed_methods = [ "GET", "DELETE", "PUT", "POST" ]
+    allowed_origins = ["*"]
+    allowed_methods = ["GET", "DELETE", "PUT", "POST"]
+    allowed_headers = ["*"]
   }
 }
 
