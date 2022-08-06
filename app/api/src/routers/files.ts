@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import { s3BaseUrl } from '../constants';
 import { createFile, deleteFile, getFile, getFiles } from '../database/models';
-import { createSignedUrl, deleteFile as deleteS3File } from '../aws';
+import {
+  addSignedCookies,
+  createSignedUrl,
+  deleteFile as deleteS3File,
+} from '../aws';
 import { lookup } from 'mime-types';
 
 const fileRouter = Router()
@@ -12,9 +16,7 @@ const fileRouter = Router()
       if (retrievedFile) {
         const { url: fileUrl } = retrievedFile;
 
-        const viewUrl = `${fileUrl}?response-content-type=${lookup(
-          fileUrl
-        )}`;
+        const viewUrl = `${fileUrl}?response-content-type=${lookup(fileUrl)}`;
 
         retrievedFile.url = createSignedUrl(viewUrl);
 
@@ -28,6 +30,8 @@ const fileRouter = Router()
   })
   .get('/', async (_req, res) => {
     const retrievedFiles = await getFiles();
+
+    addSignedCookies(res, retrievedFiles);
 
     res.status(200).json(retrievedFiles);
   })
