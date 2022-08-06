@@ -37,9 +37,7 @@ const fileRouter = Router()
 
       if (fileToDelete) {
         await deleteFile(req.params.id);
-
-        const deleteUrl = createSignedUrl(fileToDelete.url);
-        await deleteS3File(deleteUrl);
+        await deleteS3File(fileToDelete.url);
 
         res.status(204).json();
       } else {
