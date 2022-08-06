@@ -82,35 +82,40 @@ const App = () => {
             const decodedFileName = decodeURI(file.name);
             return (
               <div key={decodedFileName}>
-                <input
-                  type={"button"}
-                  onClick={async () => {
-                    setUpdatingFiles(true);
+                <div>
+                  <input
+                    type={"button"}
+                    onClick={async () => {
+                      setUpdatingFiles(true);
 
-                    await Axios.delete(`/api/files/${file.id}`);
+                      await Axios.delete(`/api/files/${file.id}`);
 
-                    await timeout(1000);
+                      await timeout(1000);
 
-                    setUpdatingFiles(false);
-                  }}
-                  value='Delete'
-                />{" "}
-                <a
-                  href={file.url}
-                  target={"_blank"}
-                  onClick={async (e) => {
-                    e.preventDefault();
+                      setUpdatingFiles(false);
+                    }}
+                    value='Delete'
+                  />{" "}
+                  <a
+                    href={file.url}
+                    target={"_blank"}
+                    onClick={async (e) => {
+                      e.preventDefault();
 
-                    const { data: retrievedFile } = await Axios.get(
-                      `/api/files/${file.id}`
-                    );
+                      const { data: retrievedFile } = await Axios.get(
+                        `/api/files/${file.id}`
+                      );
 
-                    window.open(retrievedFile.url, "_blank", "noreferrer");
-                  }}
-                  rel='noreferrer'
-                >
-                  {decodedFileName}
-                </a>
+                      window.open(retrievedFile.url, "_blank", "noreferrer");
+                    }}
+                    rel='noreferrer'
+                  >
+                    {decodedFileName}
+                  </a>
+                </div>
+                <div>
+                  <iframe title={file.name} src={file.url} sandbox="allow-same-origin"></iframe>
+                </div>
               </div>
             );
           })}
