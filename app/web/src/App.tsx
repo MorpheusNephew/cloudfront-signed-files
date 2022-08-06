@@ -58,11 +58,7 @@ const App = () => {
                   name: fileToUpload.name,
                 });
 
-                await Axios.put(apiResponse.url, fileToUpload, {
-                  headers: {
-                    "Content-Disposition": "inline",
-                  },
-                });
+                await Axios.put(apiResponse.url, fileToUpload);
 
                 await timeout(1000);
               } catch {
@@ -77,7 +73,7 @@ const App = () => {
             <input
               name='fileToUpload'
               type={"file"}
-              accept='image/*'
+              accept='image/*,audio/*,video/*,.pdf'
               aria-label='Upload File'
             />{" "}
             <input type={"submit"} value='Submit' />
