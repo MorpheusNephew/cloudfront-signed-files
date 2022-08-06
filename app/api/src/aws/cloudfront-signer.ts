@@ -6,6 +6,7 @@ import {
   CloudfrontSignInputWithPolicy,
 } from '@aws-sdk/cloudfront-signer';
 import {
+    cloudfrontDomainName,
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
   s3BaseUrl,
@@ -26,7 +27,7 @@ export const createSignedUrl = (fileUrl: string) => {
   return getSignedUrl(input);
 };
 
-export const createSignedCookies = (files: FileResponse[]) => {
+export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   const policy: Policy = {
     Statement: files.map((file) => ({ Resource: file.url })),
   };
@@ -38,7 +39,11 @@ export const createSignedCookies = (files: FileResponse[]) => {
     policy: JSON.stringify(policy),
   };
 
-  return getSignedCookies(input);
+  const signedCookies = getSignedCookies(input);
+
+  for (const [key, value] of Object.entries(signedCookies)) {
+    res.cookie(key, value, { domain: `.${cloudfrontDomainName}` });
+  }
 };
 
 interface Policy {
