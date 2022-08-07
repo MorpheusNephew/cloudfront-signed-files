@@ -26,3 +26,4 @@ export const cloudfrontPrivateKey = readFileSync(
   'utf-8'
 );
 export const cloudfrontKeyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
+export const isLocal = process.env.AWS_EXECUTION_ENV ? false : true;
