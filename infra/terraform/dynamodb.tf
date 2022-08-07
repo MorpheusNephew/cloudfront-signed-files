@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "files" {
-  name = "files"
+  name = "morph-signed-files"
   hash_key = "id"
 
   attribute {
