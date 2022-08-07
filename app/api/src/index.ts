@@ -2,15 +2,21 @@ import express from 'express';
 import { connectToMongoDb } from './database';
 import routers from './routers';
 import bodyParser from 'body-parser';
+import ServerlessHttp from 'serverless-http';
+import { isLocal } from './constants';
 
 const app = express();
 
 app.use(bodyParser.json()).use('/api', routers);
 
-const port = process.env.PORT || 5000;
+export const handler = ServerlessHttp(app);
 
-app.listen(port, async () => {
-  console.log(`Running on port ${port}...`);
+if (isLocal) {
+  const port = process.env.PORT || 5000;
 
-  await connectToMongoDb();
-});
+  app.listen(port, async () => {
+    console.log(`Running on port ${port}...`);
+
+    await connectToMongoDb();
+  });
+}
