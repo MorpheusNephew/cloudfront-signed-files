@@ -48,8 +48,12 @@ resource "aws_cloudfront_public_key" "pk" {
   encoded_key = file("public_key.pem")
 }
 
+resource "aws_cloudfront_public_key" "lambda_pk" {
+  encoded_key = trimspace(tls_private_key.signedPrivateKey.public_key_pem)
+}
+
 resource "aws_cloudfront_key_group" "kg" {
-  items = [aws_cloudfront_public_key.pk.id]
+  items = [aws_cloudfront_public_key.pk.id, aws_cloudfront_public_key.lambda_pk.id]
   name  = "cloudfront-key-group"
 }
 
