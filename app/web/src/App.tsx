@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FileResponse } from "../../lib/files";
-import Axios from "axios";
+import { createFile, deleteFile, getFile, getFiles, uploadFile } from './api';
 
 const timeout = async (ms: number) => {
   return new Promise((resolve) => {
@@ -16,7 +16,7 @@ const App = () => {
 
   const loadFiles = async () => {
     setFilesLoading(true);
-    const { data } = await Axios.get("/api/files");
+    const data = await getFiles();
 
     setFiles(await data);
     setFilesLoading(false);
@@ -54,11 +54,9 @@ const App = () => {
               const fileToUpload = e.currentTarget.fileToUpload.files[0];
 
               try {
-                const { data: apiResponse } = await Axios.post("/api/files", {
-                  name: fileToUpload.name,
-                });
+                const apiResponse = await createFile(fileToUpload.name);
 
-                await Axios.put(apiResponse.url, fileToUpload);
+                await uploadFile(apiResponse.url, fileToUpload);
 
                 await timeout(1000);
               } catch {
@@ -88,7 +86,7 @@ const App = () => {
                     onClick={async () => {
                       setUpdatingFiles(true);
 
-                      await Axios.delete(`/api/files/${file.id}`);
+                      await deleteFile(file.id);
 
                       await timeout(1000);
 
@@ -102,9 +100,7 @@ const App = () => {
                     onClick={async (e) => {
                       e.preventDefault();
 
-                      const { data: retrievedFile } = await Axios.get(
-                        `/api/files/${file.id}`
-                      );
+                      const retrievedFile = await getFile(file.id);
 
                       window.open(retrievedFile.url, "_blank", "noreferrer");
                     }}
@@ -114,7 +110,11 @@ const App = () => {
                   </a>
                 </div>
                 <div>
-                  <iframe title={file.name} src={file.url} sandbox="allow-same-origin"></iframe>
+                  <iframe
+                    title={file.name}
+                    src={file.url}
+                    sandbox='allow-same-origin'
+                  ></iframe>
                 </div>
               </div>
             );
