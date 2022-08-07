@@ -45,6 +45,10 @@ resource "aws_s3_bucket_website_configuration" "web_bucket_config" {
   index_document {
     suffix = "index.html"
   }
+
+  error_document {
+    key = "index.html"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "web_bucket_versioning" {
