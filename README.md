@@ -14,7 +14,6 @@ The purpose of this project is to test out signed cookies/urls.
     - [Infrastructure](#infrastructure)
       - [S3](#s3)
       - [Cloudfront](#cloudfront)
-  - [Things Learned](#things-learned)
 
 ## Project interactions
 
@@ -81,7 +80,3 @@ This [S3](https://aws.amazon.com/s3/) bucket was set up to be private and can on
 #### Cloudfront
 
 [Cloudfront](https://aws.amazon.com/cloudfront/) was used to be the entry point to the [S3](#s3) bucket and set up to use a signing group which is used to determine who can have [access](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PrivateContent.html) to those files.
-
-## Things Learned
-
-
