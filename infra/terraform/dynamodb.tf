@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "files" {
-  name = "signed_files"
+  name = "files"
   hash_key = "id"
 
   attribute {
