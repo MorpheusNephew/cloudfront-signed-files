@@ -4,12 +4,33 @@ locals {
 
 data "aws_iam_policy_document" "signed_iam_policy" {
   statement {
+    sid = "LambdaInvoke"
+
     actions = ["sts:AssumeRole"]
 
     principals {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
     }
+  }
+
+  statement {
+    sid = "DynamodbAccess"
+
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:ConditionCheckItem",
+      "dynamodb:PutItem",
+      "dynamodb:DescribeTable",
+      "dynamodb:DeleteItem",
+      "dynamodb:GetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem"
+    ]
+
+    resources = [aws_dynamodb_table.files.arn]
   }
 }
 
