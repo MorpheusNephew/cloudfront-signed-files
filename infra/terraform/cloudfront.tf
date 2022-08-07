@@ -60,7 +60,7 @@ resource "aws_cloudfront_distribution" "s3_web_distribution" {
 
   origin {
     domain_name = aws_s3_bucket.web_bucket.bucket_regional_domain_name
-    origin_id   = local.s3_origin_id
+    origin_id   = local.s3_web_origin_id
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.s3_web_oai.cloudfront_access_identity_path
@@ -73,7 +73,7 @@ resource "aws_cloudfront_distribution" "s3_web_distribution" {
 
     viewer_protocol_policy = "allow-all"
 
-    target_origin_id = local.s3_origin_id
+    target_origin_id = local.s3_web_origin_id
 
     forwarded_values {
       query_string = true

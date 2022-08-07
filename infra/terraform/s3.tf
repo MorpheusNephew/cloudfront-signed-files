@@ -33,6 +33,7 @@ resource "aws_s3_bucket_cors_configuration" "s3_cors" {
 
 locals {
   s3_origin_id = "morphS3Origin"
+  s3_web_origin_id = "morphWebS3Origin"
 }
 
 resource "aws_s3_bucket" "web_bucket" {
