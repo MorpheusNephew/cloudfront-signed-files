@@ -9,11 +9,11 @@
   "scripts": {
     "prestart": "yarn",
     "start": "nodemon -r dotenv/config ./src/index.ts",
-    "prebuild": "rm -rf dist",
+    "prebuild": "yarn && rm -rf dist && rm -rf ../../infra/terraform/signed-api.zip",
     "build": "tsc",
-    "postbuild": "ncp package.json dist/package.json && yarn zip",
+    "postbuild": "ncp package.json dist/package.json && ncp private_key.pem dist/private_key.pem && yarn zip",
     "prezip": "cd dist && yarn --prod",
-    "zip": "cross-zip dist ../../infra/terraform/signed-api.zip"
+    "zip": "npx bestzip ../../infra/terraform/signed-api.zip dist/*"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.101",
@@ -22,7 +22,6 @@
     "@types/mime-types": "^2.1.1",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^18.6.3",
-    "cross-zip-cli": "^1.0.0",
     "dotenv": "^16.0.1",
     "mongoose": "^6.5.1",
     "ncp": "^2.0.0",

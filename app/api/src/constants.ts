@@ -6,8 +6,8 @@ assert(
   'CLOUDFRONT_DOMAIN_NAME must be present'
 );
 assert(
-  process.env.CLOUDFRONT_PRIVATE_KEY_PATH || process.env.CLOUDFRONT_PRIVATE_KEY,
-  'CLOUDFRONT_PRIVATE_KEY_PATH OR CLOUDFRONT_PRIVATE_KEY must be present'
+  process.env.CLOUDFRONT_PRIVATE_KEY_PATH,
+  'CLOUDFRONT_PRIVATE_KEY_PATH must be present'
 );
 
 assert(
@@ -21,10 +21,9 @@ export const mongoDbUser = process.env.MONGO_DB_USER || '';
 export const mongoDbPass = process.env.MONGO_DB_PASS || '';
 export const s3BaseUrl = `https://${process.env.CLOUDFRONT_DOMAIN_NAME}`;
 export const cloudfrontDomainName = process.env.CLOUDFRONT_DOMAIN_NAME;
-
-export const cloudfrontPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY_PATH ? readFileSync(
+export const cloudfrontPrivateKey = readFileSync(
   process.env.CLOUDFRONT_PRIVATE_KEY_PATH,
   'utf-8'
-) : process.env.CLOUDFRONT_PRIVATE_KEY!;
+);
 export const cloudfrontKeyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
 export const isLocal = process.env.AWS_EXECUTION_ENV ? false : true;
