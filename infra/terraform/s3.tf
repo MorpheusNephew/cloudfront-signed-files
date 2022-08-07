@@ -34,3 +34,42 @@ resource "aws_s3_bucket_cors_configuration" "s3_cors" {
 locals {
   s3_origin_id = "morphS3Origin"
 }
+
+resource "aws_s3_bucket" "web_bucket" {
+  bucket = "morph-signed-web"
+}
+
+resource "aws_s3_bucket_website_configuration" "web_bucket_config" {
+  bucket = aws_s3_bucket.web_bucket.bucket
+
+  index_document {
+    suffix = "index.html"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "web_bucket_versioning" {
+  bucket = aws_s3_bucket.web_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_policy" "oia_web_policy" {
+  bucket = aws_s3_bucket.web_bucket.id
+  policy = data.aws_iam_policy_document.oia_web_for_s3.json
+}
+
+data "aws_iam_policy_document" "oia_web_for_s3" {
+  statement {
+    actions = ["s3:GetObject"]
+
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.s3_web_oai.iam_arn]
+    }
+
+    resources = ["${aws_s3_bucket.web_bucket.arn}/*"]
+  }
+}
