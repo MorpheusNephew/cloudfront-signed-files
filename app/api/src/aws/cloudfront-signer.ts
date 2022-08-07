@@ -11,7 +11,7 @@ import {
   cloudfrontPrivateKey,
   s3BaseUrl,
 } from '../constants';
-import { FileResponse } from '../../../lib/files';
+import { FileResponse } from '../types';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();

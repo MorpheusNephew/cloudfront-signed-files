@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FileResponse } from "../../lib/files";
 import { createFile, deleteFile, getFile, getFiles, uploadFile } from './api';
+import { FileResponse } from './types';
 
 const timeout = async (ms: number) => {
   return new Promise((resolve) => {
