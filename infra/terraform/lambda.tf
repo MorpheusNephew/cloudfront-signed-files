@@ -14,24 +14,24 @@ data "aws_iam_policy_document" "signed_iam_policy" {
     }
   }
 
-  # statement {
-  #   sid = "DynamodbAccess"
+  statement {
+    sid = "DynamodbAccess"
 
-  #   actions = [
-  #     "dynamodb:BatchGetItem",
-  #     "dynamodb:BatchWriteItem",
-  #     "dynamodb:ConditionCheckItem",
-  #     "dynamodb:PutItem",
-  #     "dynamodb:DescribeTable",
-  #     "dynamodb:DeleteItem",
-  #     "dynamodb:GetItem",
-  #     "dynamodb:Scan",
-  #     "dynamodb:Query",
-  #     "dynamodb:UpdateItem"
-  #   ]
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:ConditionCheckItem",
+      "dynamodb:PutItem",
+      "dynamodb:DescribeTable",
+      "dynamodb:DeleteItem",
+      "dynamodb:GetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem"
+    ]
 
-  #   resources = [aws_dynamodb_table.files.arn]
-  # }
+    resources = [aws_dynamodb_table.files.arn]
+  }
 }
 
 resource "aws_iam_role" "signed_function_role" {
@@ -50,10 +50,10 @@ resource "aws_lambda_function" "signed_funtion" {
 
   environment {
     variables = {
-      CLOUDFRONT_DOMAIN_NAME = aws_cloudfront_distribution.s3_distribution.domain_name
-      CLOUDFRONT_KEY_PAIR_ID = aws_cloudfront_public_key.pk.id
+      CLOUDFRONT_DOMAIN_NAME      = aws_cloudfront_distribution.s3_distribution.domain_name
+      CLOUDFRONT_KEY_PAIR_ID      = aws_cloudfront_public_key.pk.id
       CLOUDFRONT_PRIVATE_KEY_PATH = "private_key.pem"
-      CLOUDFRONT_PRIVATE_KEY = var.cloudfront_sign_private_key_pem
+      CLOUDFRONT_PRIVATE_KEY      = var.cloudfront_sign_private_key_pem
     }
   }
 }
