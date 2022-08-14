@@ -25,8 +25,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
         forward = "all"
       }
     }
-
-    trusted_key_groups = [aws_cloudfront_key_group.kg.id]
   }
 
   restrictions {
