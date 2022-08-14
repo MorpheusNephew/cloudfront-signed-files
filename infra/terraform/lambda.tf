@@ -38,10 +38,6 @@ resource "aws_iam_role" "signed_function_role" {
   assume_role_policy = data.aws_iam_policy_document.signed_iam_policy.json
 }
 
-resource "tls_private_key" "signed_private_key" {
-  algorithm = "RSA"
-}
-
 resource "aws_lambda_function" "signed_funtion" {
   function_name = "signed-api"
   role          = aws_iam_role.signed_function_role.arn
@@ -57,7 +53,7 @@ resource "aws_lambda_function" "signed_funtion" {
       CLOUDFRONT_DOMAIN_NAME = aws_cloudfront_distribution.s3_distribution.domain_name
       CLOUDFRONT_KEY_PAIR_ID = aws_cloudfront_public_key.pk.id
       CLOUDFRONT_PRIVATE_KEY_PATH = "private_key.pem"
-      CLOUDFRONT_PRIVATE_KEY = tls_private_key.signed_private_key.private_key_pem
+      CLOUDFRONT_PRIVATE_KEY = var.cloudfront_sign_private_key_pem
     }
   }
 }
