@@ -26,7 +26,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
 
-    # trusted_key_groups = [aws_cloudfront_key_group.kg.id]
+    trusted_key_groups = [aws_cloudfront_key_group.kg.id]
   }
 
   restrictions {
@@ -44,14 +44,14 @@ resource "aws_cloudfront_origin_access_identity" "s3_oai" {
   comment = "Used with s3"
 }
 
-# resource "aws_cloudfront_public_key" "pk" {
-#   encoded_key = trimspace(tls_private_key.signed_private_key.public_key_pem)
-# }
+resource "aws_cloudfront_public_key" "pk" {
+  encoded_key = trimspace(tls_private_key.signed_private_key.public_key_pem)
+}
 
-# resource "aws_cloudfront_key_group" "kg" {
-#   items = [aws_cloudfront_public_key.pk.id]
-#   name  = "cloudfront-key-group"
-# }
+resource "aws_cloudfront_key_group" "kg" {
+  items = [aws_cloudfront_public_key.pk.id]
+  name  = "cloudfront-key-group"
+}
 
 # Web things
 
