@@ -180,3 +180,4 @@ terraform.rc
 
 # Private Keys
 **/private_key.pem
+**/private-key.pem
