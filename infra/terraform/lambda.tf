@@ -40,7 +40,7 @@ resource "aws_iam_role" "signed_function_role" {
 }
 
 resource "aws_iam_role_policy" "signed_lambda_policy" {
-  role   = aws_iam_role.signed_function_role
+  role   = aws_iam_role.signed_function_role.id
   policy = data.aws_iam_policy_document.signed_lambda_policy.json
 }
 
