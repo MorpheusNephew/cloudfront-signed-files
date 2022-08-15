@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "signed_iam_policy" {
       "dynamodb:PutItem",
       "dynamodb:Query",
       "dynamodb:Scan",
-      "dynamodb:UpdateItem",
+      "dynamodb:UpdateItem"
     ]
 
     resources = [aws_dynamodb_table.files.arn]
