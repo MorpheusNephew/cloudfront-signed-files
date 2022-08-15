@@ -48,7 +48,7 @@ resource "aws_cloudfront_public_key" "pk" {
   encoded_key = trimspace(var.cloudfront_sign_public_key_pem)
 
   lifecycle {
-    prevent_destroy = true
+    create_before_destroy = true
   }
 }
 
