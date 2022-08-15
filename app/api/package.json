@@ -9,11 +9,11 @@
   "scripts": {
     "prestart": "yarn",
     "start": "nodemon -r dotenv/config ./src/index.ts",
-    "prebuild": "yarn && rm -rf dist && rm -rf ../../infra/terraform/signed-api.zip",
+    "prebuild": "yarn && rm -rf dist && rm -rf ../../infra/terraform/deploy/signed-api.zip",
     "build": "tsc",
-    "postbuild": "ncp package.json dist/package.json && ncp private_key.pem dist/private_key.pem && yarn zip",
+    "postbuild": "ncp package.json dist/package.json && yarn zip",
     "prezip": "cd dist && yarn --prod",
-    "zip": "npx bestzip ../../infra/terraform/signed-api.zip dist/*"
+    "zip": "npx bestzip ../../infra/terraform/deploy/signed-api.zip dist/*"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.101",

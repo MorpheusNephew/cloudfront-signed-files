@@ -1,5 +1,5 @@
 locals {
-  api_zip_path = "signed-api.zip"
+  api_zip_path = "deploy/signed-api.zip"
 }
 
 data "aws_iam_policy_document" "signed_role_policy" {
