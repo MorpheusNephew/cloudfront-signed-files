@@ -2,7 +2,7 @@ locals {
   api_zip_path = "signed-api.zip"
 }
 
-data "aws_iam_policy_document" "signed_iam_policy" {
+data "aws_iam_policy_document" "signed_role_policy" {
   statement {
     sid = "LambdaInvoke"
 
@@ -13,7 +13,9 @@ data "aws_iam_policy_document" "signed_iam_policy" {
       identifiers = ["lambda.amazonaws.com"]
     }
   }
+}
 
+data "aws_iam_policy_document" "signed_lambda_policy" {
   statement {
     sid = "DynamodbAccess"
 
@@ -34,7 +36,12 @@ data "aws_iam_policy_document" "signed_iam_policy" {
 }
 
 resource "aws_iam_role" "signed_function_role" {
-  assume_role_policy = data.aws_iam_policy_document.signed_iam_policy.json
+  assume_role_policy = data.aws_iam_policy_document.signed_role_policy.json
+}
+
+resource "aws_iam_role_policy" "signed_lambda_policy" {
+  role   = aws_iam_role.signed_function_role
+  policy = data.aws_iam_policy_document.signed_lambda_policy.json
 }
 
 resource "aws_lambda_function" "signed_funtion" {
