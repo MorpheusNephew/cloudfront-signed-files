@@ -14,24 +14,23 @@ data "aws_iam_policy_document" "signed_iam_policy" {
     }
   }
 
-  # statement {
-  #   sid = "DynamodbAccess"
+  statement {
+    sid = "DynamodbAccess"
 
-  #   actions = [
-  #     "dynamodb:BatchGetItem",
-  #     "dynamodb:BatchWriteItem",
-  #     "dynamodb:ConditionCheckItem",
-  #     "dynamodb:PutItem",
-  #     "dynamodb:DescribeTable",
-  #     "dynamodb:DeleteItem",
-  #     "dynamodb:GetItem",
-  #     "dynamodb:Scan",
-  #     "dynamodb:Query",
-  #     "dynamodb:UpdateItem"
-  #   ]
+    actions = [
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:DeleteItem",
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:UpdateItem"
+    ]
 
-  #   resources = [aws_dynamodb_table.files.arn]
-  # }
+    resources = [aws_dynamodb_table.files.arn]
+  }
 }
 
 resource "aws_iam_role" "signed_function_role" {
