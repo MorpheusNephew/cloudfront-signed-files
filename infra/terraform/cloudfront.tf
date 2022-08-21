@@ -27,7 +27,7 @@ resource "aws_cloudfront_distribution" "main_distribution" {
   }
 
   origin {
-    domain_name = aws_apigatewayv2_api.api_gateway.api_endpoint
+    domain_name = aws_apigatewayv2_api.api_gateway.execution_arn
     origin_id   = local.api_origin_id
   }
 
