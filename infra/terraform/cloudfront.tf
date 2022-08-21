@@ -5,6 +5,8 @@ locals {
 resource "aws_cloudfront_distribution" "main_distribution" {
   enabled = true
 
+  default_root_object = "index.html"
+
   origin {
     domain_name = aws_s3_bucket.signed_bucket.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
@@ -15,7 +17,7 @@ resource "aws_cloudfront_distribution" "main_distribution" {
   }
 
   origin {
-    domain_name = aws_s3_bucket.web_bucket.website_endpoint
+    domain_name = aws_s3_bucket.web_bucket.bucket_regional_domain_name
     origin_id   = local.s3_web_origin_id
 
     s3_origin_config {
