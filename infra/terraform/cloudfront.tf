@@ -1,5 +1,6 @@
 locals {
   cloudfront_s3_pattern = "private"
+  api_origin_id         = "api"
 }
 
 resource "aws_cloudfront_distribution" "main_distribution" {
@@ -23,6 +24,11 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.s3_web_oai.cloudfront_access_identity_path
     }
+  }
+
+  origin {
+    domain_name = aws_apigatewayv2_api.api_gateway.api_endpoint
+    origin_id   = local.api_origin_id
   }
 
   default_cache_behavior {
@@ -71,6 +77,25 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     }
 
     trusted_key_groups = [aws_cloudfront_key_group.kg.id]
+  }
+
+  ordered_cache_behavior {
+    path_pattern = "api/*"
+
+    allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
+    cached_methods  = ["GET", "HEAD", "OPTIONS"]
+
+    viewer_protocol_policy = "allow-all"
+
+    target_origin_id = local.api_origin_id
+
+    forwarded_values {
+      query_string = true
+
+      cookies {
+        forward = "all"
+      }
+    }
   }
 }
 
