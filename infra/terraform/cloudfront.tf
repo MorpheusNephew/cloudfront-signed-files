@@ -27,7 +27,7 @@ resource "aws_cloudfront_distribution" "main_distribution" {
   }
 
   origin {
-    domain_name = "dbrks1e7e6.execute-api.us-east-1.amazonaws.com"
+    domain_name = replace(aws_apigatewayv2_api.api_gateway.api_endpoint, "https://", "")
     origin_id   = local.api_origin_id
 
     custom_origin_config {
