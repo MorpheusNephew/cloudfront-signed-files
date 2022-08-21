@@ -56,7 +56,7 @@ resource "aws_lambda_function" "signed_funtion" {
 
   environment {
     variables = {
-      CLOUDFRONT_DOMAIN_NAME = aws_cloudfront_distribution.main_distribution.domain_name
+      CLOUDFRONT_DOMAIN_NAME = "d2n6r7566qcuc5.cloudfront.net"
       CLOUDFRONT_KEY_PAIR_ID = aws_cloudfront_public_key.pk.id
       CLOUDFRONT_PRIVATE_KEY = var.cloudfront_sign_private_key_pem
       CLOUDFRONT_S3_PATTERN  = local.cloudfront_s3_pattern
