@@ -67,13 +67,13 @@ data "aws_iam_policy_document" "oia_web_for_s3" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "signed_website" {
-  bucket = aws_s3_bucket.web_bucket.bucket
+# resource "aws_s3_bucket_website_configuration" "signed_website" {
+#   bucket = aws_s3_bucket.web_bucket.bucket
 
-  index_document {
-    suffix = "index.html"
-  }
-}
+#   index_document {
+#     suffix = "index.html"
+#   }
+# }
 
 # Upload files
 resource "null_resource" "remove_and_upload_to_s3" {
