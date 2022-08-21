@@ -10,7 +10,10 @@
     "start:db": "cd app/db && yarn start",
     "start:api": "cd app/api && yarn start",
     "start:web": "cd app/web && yarn start",
-    "start": "concurrently \"yarn:start:*\""
+    "start": "concurrently \"yarn:start:*\"",
+    "build:api": "cd app/api && yarn build",
+    "build:web": "cd app/web && yarn build",
+    "build": "concurrently \"yarn:build:*\""
   },
   "devDependencies": {
     "concurrently": "^7.3.0"
