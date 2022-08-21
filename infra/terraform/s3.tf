@@ -32,7 +32,7 @@ resource "aws_s3_bucket_cors_configuration" "s3_cors" {
 }
 
 locals {
-  s3_origin_id = "morphS3Origin"
+  s3_origin_id     = "morphS3Origin"
   s3_web_origin_id = "morphWebS3Origin"
 }
 
@@ -67,12 +67,11 @@ data "aws_iam_policy_document" "oia_web_for_s3" {
   }
 }
 
-resource "aws_s3_bucket_cors_configuration" "s3_web_cors" {
-  bucket = aws_s3_bucket.web_bucket.id
+resource "aws_s3_bucket_website_configuration" "signed_website" {
+  bucket = aws_s3_bucket.web_bucket.bucket
 
-  cors_rule {
-    allowed_origins = ["*"]
-    allowed_methods = ["GET"]
+  index_document {
+    suffix = "index.html"
   }
 }
 
