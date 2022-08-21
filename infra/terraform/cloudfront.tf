@@ -26,11 +26,6 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     }
   }
 
-  origin {
-    domain_name = "https://dbrks1e7e6.execute-api.us-east-1.amazonaws.com"
-    origin_id   = local.api_origin_id
-  }
-
   default_cache_behavior {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
@@ -77,25 +72,6 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     }
 
     trusted_key_groups = [aws_cloudfront_key_group.kg.id]
-  }
-
-  ordered_cache_behavior {
-    path_pattern = "api/*"
-
-    allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
-    cached_methods  = ["GET", "HEAD", "OPTIONS"]
-
-    viewer_protocol_policy = "allow-all"
-
-    target_origin_id = local.api_origin_id
-
-    forwarded_values {
-      query_string = true
-
-      cookies {
-        forward = "all"
-      }
-    }
   }
 }
 
