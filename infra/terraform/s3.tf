@@ -79,6 +79,6 @@ resource "aws_s3_bucket_cors_configuration" "s3_web_cors" {
 # Upload files
 resource "null_resource" "remove_and_upload_to_s3" {
   provisioner "local-exec" {
-    command = "aws s3 sync ${path.module}/web s3://${aws_s3_bucket.web_bucket.id}"
+    command = "aws s3 sync ${path.module}/deploy/web s3://${aws_s3_bucket.web_bucket.id}"
   }
 }
