@@ -48,7 +48,7 @@ resource "aws_lambda_function" "signed_funtion" {
   function_name = "signed-api"
   role          = aws_iam_role.signed_function_role.arn
 
-  handler = "server.handler"
+  handler = "dist/server.handler"
   runtime = "nodejs14.x"
 
   filename         = local.api_zip_path
