@@ -58,7 +58,6 @@ resource "aws_lambda_function" "signed_funtion" {
     variables = {
       CLOUDFRONT_DOMAIN_NAME      = aws_cloudfront_distribution.s3_distribution.domain_name
       CLOUDFRONT_KEY_PAIR_ID      = aws_cloudfront_public_key.pk.id
-      CLOUDFRONT_PRIVATE_KEY_PATH = "private_key.pem"
       CLOUDFRONT_PRIVATE_KEY      = var.cloudfront_sign_private_key_pem
     }
   }
