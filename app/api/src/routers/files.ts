@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { s3BaseUrl } from '../constants';
-import { createFile, deleteFile, getFile, getFiles } from '../database/models';
+import { FileModel } from '../database/models';
 import {
   addSignedCookies,
   createSignedUrl,
@@ -11,7 +11,7 @@ import { lookup } from 'mime-types';
 const fileRouter = Router()
   .get('/:id', async (req, res) => {
     try {
-      const retrievedFile = await getFile(req.params.id);
+      const retrievedFile = await FileModel.getFile(req.params.id);
 
       if (retrievedFile) {
         const { url: fileUrl } = retrievedFile;
@@ -29,7 +29,7 @@ const fileRouter = Router()
     }
   })
   .get('/', async (_req, res) => {
-    const retrievedFiles = await getFiles();
+    const retrievedFiles = await FileModel.getFiles();
 
     addSignedCookies(res, retrievedFiles);
 
@@ -37,10 +37,10 @@ const fileRouter = Router()
   })
   .delete('/:id', async (req, res) => {
     try {
-      const fileToDelete = await getFile(req.params.id);
+      const fileToDelete = await FileModel.getFile(req.params.id);
 
       if (fileToDelete) {
-        await deleteFile(req.params.id);
+        await FileModel.deleteFile(req.params.id);
         await deleteS3File(fileToDelete.url);
 
         res.status(204).json();
@@ -63,7 +63,7 @@ const fileRouter = Router()
     };
 
     try {
-      const createdFile = await createFile(fileToCreate);
+      const createdFile = await FileModel.createFile(fileToCreate);
 
       createdFile.url = createSignedUrl(fileUrl);
 
