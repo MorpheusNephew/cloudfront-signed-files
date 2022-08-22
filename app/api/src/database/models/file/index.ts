@@ -1,5 +1,5 @@
 import mongoose, { model, Schema } from 'mongoose';
-import { FileRequest, FileResponse } from '../../types';
+import { FileRequest, FileResponse } from '../../../types';
 
 const FileSchema = new Schema<FileResponse>({
   id: Schema.Types.ObjectId,
