@@ -10,7 +10,7 @@ const FileSchema = new Schema<FileResponse>({
 
 const File = model<FileResponse>('File', FileSchema);
 
-export class MongooseFileModal implements IFileModel {
+export class MongooseFileModel implements IFileModel {
   async getFile(fileId: string) {
     return (await File.findById(fileId))?.toObject();
   }
