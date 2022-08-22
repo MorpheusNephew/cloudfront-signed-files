@@ -1,3 +1,3 @@
-import { MongooseFileModal } from './mongoose';
+import { MongooseFileModel } from './mongoose';
 
-export const FileModel = new MongooseFileModal();
+export const FileModel = new MongooseFileModel();
