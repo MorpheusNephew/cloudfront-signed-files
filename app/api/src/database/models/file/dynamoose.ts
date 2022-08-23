@@ -1,8 +1,9 @@
 import { IFileModel, TCreateFile } from './types';
 import * as dynamoose from 'dynamoose';
 import { v4 as uuid } from 'uuid';
+import { filesTableName } from '../../../constants';
 
-const FileModel = dynamoose.model('File', {
+const FileModel = dynamoose.model(filesTableName, {
   id: String,
   name: String,
   url: String,

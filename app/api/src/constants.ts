@@ -29,3 +29,4 @@ export const cloudfrontPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY_PATH
   : process.env.CLOUDFRONT_PRIVATE_KEY!;
 export const cloudfrontKeyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
 export const isLocal = process.env.AWS_EXECUTION_ENV ? false : true;
+export const filesTableName = process.env.FILES_TABLE_NAME || '';
