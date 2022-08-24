@@ -6,6 +6,7 @@ import {
   CloudfrontSignInputWithPolicy,
 } from '@aws-sdk/cloudfront-signer';
 import {
+  cloudfrontDomainName,
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
   s3BaseUrl,
@@ -45,7 +46,10 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   const signedCookies = getSignedCookies(input);
 
   for (const [key, value] of Object.entries(signedCookies)) {
-    res.cookie(key, value, { sameSite: 'strict' });
+    res.cookie(key, value, {
+      sameSite: 'strict',
+      domain: cloudfrontDomainName,
+    });
   }
 };
 
