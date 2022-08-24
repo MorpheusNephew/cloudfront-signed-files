@@ -10,7 +10,6 @@ import {
   cloudfrontPrivateKey,
   cloudfrontS3Path,
   s3BaseUrl,
-  s3PrivateBucketArn,
 } from '../constants';
 import { FileResponse } from '../types';
 
@@ -33,7 +32,7 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
     Statement: files.map((file) => ({
       Action: 's3:GetObject',
       Effect: 'Allow',
-      Resource: `${s3PrivateBucketArn}/${cloudfrontS3Path}/${file.name}`,
+      Resource: file.url,
     })),
   };
 
