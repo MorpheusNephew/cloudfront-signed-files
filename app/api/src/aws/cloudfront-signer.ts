@@ -27,23 +27,28 @@ export const createSignedUrl = (fileUrl: string) => {
   return getSignedUrl(input);
 };
 
-export const addSignedCookies = (res: Response, files: FileResponse[]) => {
+export const addSignedCookies = (res: Response) => {
+  const url = `${s3BaseUrl}/*`;
+
   const policy: Policy = {
     Statement: [
       {
-        Resource: files[0].url,
+        Resource: url,
       },
     ],
   };
 
   const input: CloudfrontSignInputWithPolicy = {
-    url: `${s3BaseUrl}/*`,
+    url,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
     policy: JSON.stringify(policy),
   };
 
-  console.log('CloudfrontSignInputWithPolicy', { policy: input.policy });
+  console.log('CloudfrontSignInputWithPolicy', {
+    policy: input.policy,
+    url: input.url,
+  });
 
   const signedCookies = getSignedCookies(input);
 

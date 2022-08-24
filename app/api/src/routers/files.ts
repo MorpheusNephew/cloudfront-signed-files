@@ -31,7 +31,7 @@ const fileRouter = Router()
   .get('/', async (_req, res) => {
     const retrievedFiles = await FileModel.getFiles();
 
-    addSignedCookies(res, retrievedFiles);
+    addSignedCookies(res);
 
     res.status(200).json(retrievedFiles);
   })
