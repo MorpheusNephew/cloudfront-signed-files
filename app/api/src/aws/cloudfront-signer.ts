@@ -15,7 +15,7 @@ import { FileResponse } from '../types';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
-  expirationDate.setSeconds(expirationDate.getSeconds() + 10);
+  expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
   const input: CloudfrontSignInputWithParameters = {
     url: fileUrl,

@@ -63,9 +63,10 @@ const fileRouter = Router()
     };
 
     try {
+      const signedUrl = createSignedUrl(fileUrl);
       const createdFile = await FileModel.createFile(fileToCreate);
 
-      createdFile.url = createSignedUrl(fileUrl);
+      createdFile.url = signedUrl;
 
       res.status(201).json(createdFile);
     } catch {
