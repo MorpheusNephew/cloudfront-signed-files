@@ -69,7 +69,8 @@ const fileRouter = Router()
       createdFile.url = signedUrl;
 
       res.status(201).json(createdFile);
-    } catch {
+    } catch (e) {
+      console.error(e);
       res.status(400).json('Error creating file');
     }
   });
