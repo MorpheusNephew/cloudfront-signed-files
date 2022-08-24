@@ -30,8 +30,6 @@ export const createSignedUrl = (fileUrl: string) => {
 export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   const policy: Policy = {
     Statement: files.map((file) => ({
-      Action: 's3:GetObject',
-      Effect: 'Allow',
       Resource: file.url,
     })),
   };
