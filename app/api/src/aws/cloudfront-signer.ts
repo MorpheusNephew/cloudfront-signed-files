@@ -3,7 +3,6 @@ import {
   getSignedCookies,
   getSignedUrl,
   CloudfrontSignInputWithParameters,
-  CloudfrontSignInputWithPolicy,
 } from '@aws-sdk/cloudfront-signer';
 import {
   cloudfrontDomainName,
@@ -11,7 +10,6 @@ import {
   cloudfrontPrivateKey,
   s3BaseUrl,
 } from '../constants';
-import { FileResponse } from '../types';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
@@ -28,27 +26,15 @@ export const createSignedUrl = (fileUrl: string) => {
 };
 
 export const addSignedCookies = (res: Response) => {
-  const url = `${s3BaseUrl}/*`;
+  const expirationDate = new Date();
+  expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
-  const policy: Policy = {
-    Statement: [
-      {
-        Resource: url,
-      },
-    ],
-  };
-
-  const input: CloudfrontSignInputWithPolicy = {
-    url,
+  const input: CloudfrontSignInputWithParameters = {
+    url: `${s3BaseUrl}/*`,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
-    policy: JSON.stringify(policy),
+    dateLessThan: expirationDate.toISOString(),
   };
-
-  console.log('CloudfrontSignInputWithPolicy', {
-    policy: input.policy,
-    url: input.url,
-  });
 
   const signedCookies = getSignedCookies(input);
 
