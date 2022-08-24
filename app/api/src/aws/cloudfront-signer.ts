@@ -30,6 +30,7 @@ export const createSignedUrl = (fileUrl: string) => {
 export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   const policy: Policy = {
     Statement: {
+      Effect: "Allow",
       Resource: files.map((file) => file.url),
     },
   };
@@ -50,12 +51,14 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
       domain: `.${cloudfrontDomainName}`,
       sameSite: 'none',
       secure: true,
+      httpOnly: true,
     });
   }
 };
 
 interface Policy {
   Statement: {
+    Effect: string;
     Resource: string[];
   };
 }
