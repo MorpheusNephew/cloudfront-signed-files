@@ -17,7 +17,7 @@ export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
-  console.log({ fileUrl, cloudfrontKeyPairId, cloudfrontPrivateKey });
+  console.log({ fileUrl, cloudfrontKeyPairId });
 
   const input: CloudfrontSignInputWithParameters = {
     url: fileUrl,
