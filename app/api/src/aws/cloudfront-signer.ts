@@ -6,7 +6,7 @@ import {
   CloudfrontSignInputWithPolicy,
 } from '@aws-sdk/cloudfront-signer';
 import {
-    cloudfrontDomainName,
+  cloudfrontDomainName,
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
   s3BaseUrl,
@@ -16,6 +16,8 @@ import { FileResponse } from '../types';
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
+
+  console.log({ fileUrl, cloudfrontKeyPairId, cloudfrontPrivateKey });
 
   const input: CloudfrontSignInputWithParameters = {
     url: fileUrl,
