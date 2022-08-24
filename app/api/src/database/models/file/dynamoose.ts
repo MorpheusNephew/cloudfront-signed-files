@@ -32,8 +32,6 @@ export class DynamooseFileModel implements IFileModel {
     const fileId = uuid();
 
     const createdFile = await FileModel.create({ id: fileId, ...fileToCreate });
-
-    console.log('dynamoose createdFile', { createdFile });
     return createdFile as any;
   }
 

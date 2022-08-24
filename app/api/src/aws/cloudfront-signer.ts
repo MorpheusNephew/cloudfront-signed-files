@@ -17,8 +17,6 @@ export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
-  console.log({ fileUrl, cloudfrontKeyPairId });
-
   const input: CloudfrontSignInputWithParameters = {
     url: fileUrl,
     keyPairId: cloudfrontKeyPairId,
@@ -41,10 +39,12 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
     policy: JSON.stringify(policy),
   };
 
+  console.log('CloudfrontSignInputWithPolicy', { input });
+
   const signedCookies = getSignedCookies(input);
 
   for (const [key, value] of Object.entries(signedCookies)) {
-    res.cookie(key, value, { domain: `.${cloudfrontDomainName}` });
+    res.cookie(key, value, { domain: `.${cloudfrontDomainName}`, sameSite: 'strict' });
   }
 };
 

@@ -63,15 +63,9 @@ const fileRouter = Router()
     };
 
     try {
-      console.log('Creating file in dynamodb', { fileToCreate });
       const createdFile = await FileModel.createFile(fileToCreate);
-      console.log('File created in dynamodb', { createdFile });
 
-      console.log('Creating signed url');
       createdFile.url = createSignedUrl(fileUrl);
-      console.log('Signed url created', { signedFile: createdFile.url });
-
-      console.log('Returning json', { createdFile });
       res.status(201).json(createdFile);
     } catch (e) {
       console.error(e);
