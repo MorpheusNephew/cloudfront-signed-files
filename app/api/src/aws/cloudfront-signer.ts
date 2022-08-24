@@ -48,8 +48,6 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   for (const [key, value] of Object.entries(signedCookies)) {
     res.cookie(key, value, {
       domain: cloudfrontDomainName,
-      sameSite: 'none',
-      secure: true,
     });
   }
 };
