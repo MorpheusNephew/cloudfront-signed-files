@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { s3BaseUrl } from '../constants';
 import { FileModel } from '../database/models';
 import {
+  addSignedCookies,
   createSignedUrl,
   deleteFile as deleteS3File,
 } from '../aws';
@@ -30,10 +31,7 @@ const fileRouter = Router()
   .get('/', async (_req, res) => {
     const retrievedFiles = await FileModel.getFiles();
 
-    retrievedFiles.forEach((file) => {
-      const viewUrl = `${file.url}?response-content-type=${lookup(file.url)}`;
-      file.url = createSignedUrl(viewUrl);
-    });
+    addSignedCookies(res, retrievedFiles);
 
     res.status(200).json(retrievedFiles);
   })
