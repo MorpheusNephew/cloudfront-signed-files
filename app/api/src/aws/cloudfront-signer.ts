@@ -29,9 +29,9 @@ export const createSignedUrl = (fileUrl: string) => {
 
 export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   const policy: Policy = {
-    Statement: files.map((file) => ({
-      Resource: file.url,
-    })),
+    Statement: {
+      Resource: files.map((file) => file.url),
+    },
   };
 
   const input: CloudfrontSignInputWithPolicy = {
@@ -55,7 +55,7 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
 };
 
 interface Policy {
-  Statement: Array<{
-    Resource: string;
-  }>;
+  Statement: {
+    Resource: string[];
+  };
 }
