@@ -9,6 +9,7 @@ import {
   cloudfrontDomainName,
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
+  cloudfrontS3Path,
   s3BaseUrl,
 } from '../constants';
 import { FileResponse } from '../types';
@@ -28,37 +29,40 @@ export const createSignedUrl = (fileUrl: string) => {
 };
 
 export const addSignedCookies = (res: Response, files: FileResponse[]) => {
-  const policy: Policy = {
-    Statement: {
-      Effect: "Allow",
-      Resource: files.map((file) => file.url),
-    },
-  };
+  files.forEach((file) => {
+    const policy: Policy = {
+      Statement: [
+        {
+          Resource: file.url,
+        },
+      ],
+    };
 
-  const input: CloudfrontSignInputWithPolicy = {
-    url: `${s3BaseUrl}/*`,
-    keyPairId: cloudfrontKeyPairId,
-    privateKey: cloudfrontPrivateKey,
-    policy: JSON.stringify(policy),
-  };
+    const input: CloudfrontSignInputWithPolicy = {
+      url: `${s3BaseUrl}/*`,
+      keyPairId: cloudfrontKeyPairId,
+      privateKey: cloudfrontPrivateKey,
+      policy: JSON.stringify(policy),
+    };
 
-  console.log('CloudfrontSignInputWithPolicy', { policy: input.policy });
+    console.log('CloudfrontSignInputWithPolicy', { policy: input.policy });
 
-  const signedCookies = getSignedCookies(input);
+    const signedCookies = getSignedCookies(input);
 
-  for (const [key, value] of Object.entries(signedCookies)) {
-    res.cookie(key, value, {
-      domain: `.${cloudfrontDomainName}`,
-      sameSite: 'none',
-      secure: true,
-      httpOnly: true,
-    });
-  }
+    for (const [key, value] of Object.entries(signedCookies)) {
+      res.cookie(key, value, {
+        domain: `.${cloudfrontDomainName}`,
+        path: `${cloudfrontS3Path}/${file.name}`,
+        sameSite: 'none',
+        secure: true,
+        httpOnly: true,
+      });
+    }
+  });
 };
 
 interface Policy {
-  Statement: {
-    Effect: string;
-    Resource: string[];
-  };
+  Statement: Array<{
+    Resource: string;
+  }>;
 }
