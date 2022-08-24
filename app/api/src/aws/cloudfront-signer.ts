@@ -33,7 +33,7 @@ export const addSignedCookies = (res: Response) => {
     url: `${s3BaseUrl}/*`,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
-    dateLessThan: expirationDate.toISOString(),
+    dateLessThan: expirationDate.toDateString(),
   };
 
   const signedCookies = getSignedCookies(input);
