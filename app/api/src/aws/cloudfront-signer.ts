@@ -43,7 +43,7 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
     policy: JSON.stringify(policy),
   };
 
-  console.log('CloudfrontSignInputWithPolicy', { input });
+  console.log('CloudfrontSignInputWithPolicy', { policy: input.policy });
 
   const signedCookies = getSignedCookies(input);
 
