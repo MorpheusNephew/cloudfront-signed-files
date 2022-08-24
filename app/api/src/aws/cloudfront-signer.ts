@@ -27,7 +27,7 @@ export const createSignedUrl = (fileUrl: string) => {
 
 export const addSignedCookies = (res: Response) => {
   const expirationDate = new Date();
-  expirationDate.setSeconds(expirationDate.getSeconds() + 30);
+  expirationDate.setHours(expirationDate.getHours() + 24);
 
   const input: CloudfrontSignInputWithParameters = {
     url: `${s3BaseUrl}/*`,
@@ -40,16 +40,10 @@ export const addSignedCookies = (res: Response) => {
 
   for (const [key, value] of Object.entries(signedCookies)) {
     res.cookie(key, value, {
-      domain: cloudfrontDomainName,
+      domain: `.${cloudfrontDomainName}`,
       sameSite: 'none',
       secure: true,
       httpOnly: true,
     });
   }
 };
-
-interface Policy {
-  Statement: Array<{
-    Resource: string;
-  }>;
-}
