@@ -6,9 +6,9 @@ import {
   CloudfrontSignInputWithPolicy,
 } from '@aws-sdk/cloudfront-signer';
 import {
-  cloudfrontDomainName,
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
+  cloudfrontS3Path,
   s3BaseUrl,
 } from '../constants';
 import { FileResponse } from '../types';
@@ -44,7 +44,7 @@ export const addSignedCookies = (res: Response, files: FileResponse[]) => {
   const signedCookies = getSignedCookies(input);
 
   for (const [key, value] of Object.entries(signedCookies)) {
-    res.cookie(key, value, { domain: `.${cloudfrontDomainName}`, sameSite: 'strict' });
+    res.cookie(key, value, { sameSite: 'strict', path: cloudfrontS3Path });
   }
 };
 

@@ -30,3 +30,4 @@ export const cloudfrontPrivateKey = process.env.CLOUDFRONT_PRIVATE_KEY_PATH
 export const cloudfrontKeyPairId = process.env.CLOUDFRONT_KEY_PAIR_ID;
 export const isLocal = process.env.AWS_EXECUTION_ENV ? false : true;
 export const filesTableName = process.env.FILES_TABLE_NAME || '';
+export const cloudfrontS3Path = process.env.CLOUDFRONT_S3_PATTERN || '';
