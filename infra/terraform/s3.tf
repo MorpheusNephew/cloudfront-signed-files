@@ -47,14 +47,6 @@ resource "aws_s3_bucket_versioning" "web_bucket_versioning" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "website" {
-  bucket = aws_s3_bucket.web_bucket.bucket
-
-  index_document {
-    suffix = "index.html"
-  }
-}
-
 resource "aws_s3_bucket_policy" "oia_web_policy" {
   bucket = aws_s3_bucket.web_bucket.id
   policy = data.aws_iam_policy_document.oia_web_for_s3.json
