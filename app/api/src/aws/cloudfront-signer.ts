@@ -10,6 +10,7 @@ import {
   cloudfrontPrivateKey,
   s3BaseUrl,
 } from '../constants';
+import { FileResponse } from '../types';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
@@ -25,12 +26,12 @@ export const createSignedUrl = (fileUrl: string) => {
   return getSignedUrl(input);
 };
 
-export const addSignedCookies = (res: Response) => {
+export const addSignedCookies = (res: Response, fileUrl: string) => {
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
   const input: CloudfrontSignInputWithParameters = {
-    url: `${s3BaseUrl}/*`,
+    url: fileUrl,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
     dateLessThan: expirationDate.toISOString(),
