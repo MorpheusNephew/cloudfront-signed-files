@@ -27,6 +27,7 @@ export const createSignedUrl = (fileUrl: string) => {
 };
 
 export const addSignedCookies = (res: Response, fileUrl: string) => {
+  const url = new URL(fileUrl);
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
@@ -45,6 +46,7 @@ export const addSignedCookies = (res: Response, fileUrl: string) => {
       sameSite: 'none',
       secure: true,
       httpOnly: true,
+      path: url.pathname,
     });
   }
 };
