@@ -68,8 +68,8 @@ data "aws_iam_policy_document" "oia_web_for_s3" {
 }
 
 # Upload files
-# resource "null_resource" "remove_and_upload_to_s3" {
-#   provisioner "local-exec" {
-#     command = "aws s3 sync ${path.module}/deploy/web s3://${aws_s3_bucket.web_bucket.id}"
-#   }
-# }
+resource "null_resource" "remove_and_upload_to_s3" {
+  provisioner "local-exec" {
+    command = "aws s3 sync ${path.module}/deploy/web s3://${aws_s3_bucket.web_bucket.id}"
+  }
+}
