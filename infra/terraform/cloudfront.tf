@@ -8,6 +8,12 @@ resource "aws_cloudfront_distribution" "main_distribution" {
 
   default_root_object = "index.html"
 
+  custom_error_response {
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "index.html"
+  }
+
   origin {
     domain_name = aws_s3_bucket.signed_bucket.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
@@ -42,7 +48,7 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
 
     target_origin_id = local.s3_web_origin_id
 
@@ -71,7 +77,7 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
 
     target_origin_id = local.s3_origin_id
 
@@ -92,7 +98,7 @@ resource "aws_cloudfront_distribution" "main_distribution" {
     allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
 
     target_origin_id = local.api_origin_id
 
