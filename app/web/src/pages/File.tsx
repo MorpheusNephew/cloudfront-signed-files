@@ -37,7 +37,6 @@ export const File = () => {
     <iframe
       title={file?.name}
       src={file?.url}
-      sandbox='allow-same-origin'
     ></iframe>
   );
 };
