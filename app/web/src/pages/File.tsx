@@ -7,7 +7,11 @@ export const File = () => {
   const [file, setFile] = useState<FileResponse>();
   const [fileLoading, setFileLoading] = useState(false);
   const [error, setError] = useState<unknown>();
-  const { fileId } = useParams();
+  const params = useParams();
+
+  console.log({ filePageParams: params });
+
+  const { fileId } = params;
 
   useEffect(() => {
     if (!fileId) return;

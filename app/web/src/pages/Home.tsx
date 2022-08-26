@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { createFile, deleteFile, getFile, getFiles, uploadFile } from "../api";
 import { FileResponse } from "../types";
 
@@ -13,6 +14,10 @@ export const Home = () => {
   const [filesLoading, setFilesLoading] = useState(false);
   const [updatingFiles, setUpdatingFiles] = useState(false);
   const [initialLoad, setInitialLoad] = useState(false);
+
+  const params = useParams();
+
+  console.log({ homePageParams: params });
 
   const loadFiles = async () => {
     setFilesLoading(true);
