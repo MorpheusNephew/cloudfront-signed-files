@@ -8,9 +8,8 @@ import {
   cloudfrontDomainName,
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
-  s3BaseUrl,
 } from '../constants';
-import { FileResponse } from '../types';
+import { lookup } from 'mime-types';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
@@ -27,12 +26,13 @@ export const createSignedUrl = (fileUrl: string) => {
 };
 
 export const addSignedCookies = (res: Response, fileUrl: string) => {
-  const url = new URL(fileUrl);
+  const viewUrl = `${fileUrl}?response-content-type=${lookup(fileUrl)}`;
+  const url = new URL(viewUrl);
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
   const input: CloudfrontSignInputWithParameters = {
-    url: fileUrl,
+    url: viewUrl,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
     dateLessThan: expirationDate.toISOString(),
