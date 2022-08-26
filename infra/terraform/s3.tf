@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "oia_web_for_s3" {
 # Upload files
 resource "null_resource" "remove_and_upload_to_s3" {
   triggers = {
-    cloudfront_key_group = aws_cloudfront_key_group.kg.id
+    cloudfront_public_key_id = aws_cloudfront_public_key.pk.id
   }
   provisioner "local-exec" {
     command = "aws s3 sync ${path.module}/deploy/web s3://${aws_s3_bucket.web_bucket.id}"
