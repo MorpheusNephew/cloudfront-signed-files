@@ -9,7 +9,6 @@ import {
   cloudfrontKeyPairId,
   cloudfrontPrivateKey,
 } from '../constants';
-import { lookup } from 'mime-types';
 
 export const createSignedUrl = (fileUrl: string) => {
   const expirationDate = new Date();
@@ -26,13 +25,12 @@ export const createSignedUrl = (fileUrl: string) => {
 };
 
 export const addSignedCookies = (res: Response, fileUrl: string) => {
-  const viewUrl = `${fileUrl}?response-content-type=${lookup(fileUrl)}`;
-  const url = new URL(viewUrl);
+  const url = new URL(fileUrl);
   const expirationDate = new Date();
   expirationDate.setSeconds(expirationDate.getSeconds() + 30);
 
   const input: CloudfrontSignInputWithParameters = {
-    url: viewUrl,
+    url: fileUrl,
     keyPairId: cloudfrontKeyPairId,
     privateKey: cloudfrontPrivateKey,
     dateLessThan: expirationDate.toISOString(),

@@ -6,6 +6,7 @@ import {
   createSignedUrl,
   deleteFile as deleteS3File,
 } from '../aws';
+import { lookup } from 'mime-types';
 
 const fileRouter = Router()
   .get('/:id', async (req, res) => {
@@ -15,7 +16,9 @@ const fileRouter = Router()
       if (retrievedFile) {
         const { url: fileUrl } = retrievedFile;
 
-        addSignedCookies(res, fileUrl);
+        retrievedFile.url = `${fileUrl}?response-content-type=${lookup(fileUrl)}`;
+
+        addSignedCookies(res, retrievedFile.url);
 
         res.json(retrievedFile);
       } else {
