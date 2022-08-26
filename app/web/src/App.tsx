@@ -8,8 +8,8 @@ const App = () => {
     <Router>
       <h1>File Renderer</h1>
       <Routes>
+        <Route index element={<Home />} />
         <Route path='/file/:fileId' element={<File />} />
-        <Route path='/' element={<Home />} />
       </Routes>
     </Router>
   );
